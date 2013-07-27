@@ -580,7 +580,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     // cost to you of processing a transaction.
     if (mapArgs.count("-mintxfee"))
     {
-        int64_t n = 0;
+        mpq n = 0;
         if (ParseMoney(mapArgs["-mintxfee"], n) && n > 0)
             CTransaction::nMinTxFee = n;
         else
@@ -588,7 +588,7 @@ bool AppInit2(boost::thread_group& threadGroup)
     }
     if (mapArgs.count("-minrelaytxfee"))
     {
-        int64_t n = 0;
+        mpq n = 0;
         if (ParseMoney(mapArgs["-minrelaytxfee"], n) && n > 0)
             CTransaction::nMinRelayTxFee = n;
         else

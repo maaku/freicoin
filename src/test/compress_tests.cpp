@@ -9,6 +9,9 @@
 
 #include <boost/test/unit_test.hpp>
 
+#define CENT 1000000LL
+#define COIN 100000000LL
+
 // amounts 0.00000001 .. 0.00100000
 #define NUM_MULTIPLES_UNIT 100000
 
