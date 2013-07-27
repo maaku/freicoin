@@ -36,6 +36,8 @@ Dependencies
  qt          | GUI              | GUI toolkit
  protobuf    | Payments in GUI  | Data interchange format used for payment protocol
  libqrencode | QR codes in GUI  | Optional for generating QR codes
+ gmp         | mpz, mpq         | Multi-precision integer and rational types
+ mpfr        | mpfr             | Multi-precision, deterministic floating point
 
 [miniupnpc](http://miniupnp.free.fr/) may be used for UPnP port mapping.  It can be downloaded from [here](
 http://miniupnp.tuxfamily.org/files/).  UPnP support is compiled in and
