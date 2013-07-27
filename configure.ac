@@ -146,6 +146,28 @@ AC_ARG_ENABLE([glibc-back-compat],
 
 AC_ARG_WITH([protoc-bindir],[AS_HELP_STRING([--with-protoc-bindir=BIN_DIR],[specify protoc bin path])], [protoc_bin_path=$withval], [])
 
+AC_ARG_WITH([gmp_include],
+            [AC_HELP_STRING([--with-gmp-include=DIR],
+                            [GMP include directory])],
+            [CPPFLAGS="-I$withval $CPPFLAGS"])
+AC_ARG_WITH([gmp_lib],
+            [AC_HELP_STRING([--with-gmp-lib=DIR],
+                            [GMP lib directory])],
+            [LDFLAGS="-L$withval $LDFLAGS"])
+AC_ARG_WITH([gmp],
+            [AC_HELP_STRING([--with-gmp=DIR],
+                           [GMP install directory])],
+            [
+            if test -z "$with_gmp_lib" -a -z "$with_gmp_include" ; then
+               CPPFLAGS="-I$withval/include $CPPFLAGS"
+               LDFLAGS="-L$withval/lib $LDFLAGS"
+            else
+               AC_MSG_FAILURE([Do not use --with-gmp and --with-gmp-include/--with-gmp-lib options simultaneously.])
+            fi
+            ])
+
+AC_ARG_WITH([protoc-bindir],[AS_HELP_STRING([--with-protoc-bindir=BIN_DIR],[specify protoc bin path])], [protoc_bin_path=$withval], [])
+
 # Enable debug 
 AC_ARG_ENABLE([debug],
     [AS_HELP_STRING([--enable-debug],
@@ -668,6 +690,39 @@ if test x$boost_sleep != xyes; then
 fi
 
 fi
+
+# Check GMP Header
+AC_MSG_CHECKING(for gmp.h)
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+#include "gmp.h"
+]])],[AC_MSG_RESULT(yes)],[
+ AC_MSG_RESULT(no)
+ AC_MSG_ERROR([gmp.h cannot be found or is unusable.])
+])
+
+AC_CHECK_LIB([gmp], [__gmpz_init],
+             [LIBS="-lgmp -lgmpxx $LIBS"],
+             [AC_MSG_ERROR([libgmp not found or uses a different ABI.])])
+
+AC_ARG_WITH([utils],
+  [AS_HELP_STRING([--with-utils],
+  [build bitcoin-cli bitcoin-tx (default=yes)])],
+  [build_bitcoin_utils=$withval],
+  [build_bitcoin_utils=yes])
+
+AC_ARG_WITH([libs],
+  [AS_HELP_STRING([--with-libs],
+  [build libraries (default=yes)])],
+  [build_bitcoin_libs=$withval],
+  [build_bitcoin_libs=yes])
+
+AC_ARG_WITH([daemon],
+  [AS_HELP_STRING([--with-daemon],
+  [build bitcoind daemon (default=yes)])],
+  [build_bitcoind=$withval],
+  [build_bitcoind=yes])
+
+BITCOIN_QT_INIT
 
 if test x$use_pkgconfig = xyes; then
 
