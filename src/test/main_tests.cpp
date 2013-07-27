@@ -11,14 +11,14 @@ BOOST_AUTO_TEST_SUITE(main_tests)
 
 BOOST_AUTO_TEST_CASE(subsidy_limit_test)
 {
-    uint64_t nSum = 0;
+    mpq nSum = 0;
     for (int nHeight = 0; nHeight < 14000000; nHeight += 1000) {
-        uint64_t nSubsidy = GetBlockValue(nHeight, 0);
+        mpq nSubsidy = GetBlockValue(nHeight, 0);
         BOOST_CHECK(nSubsidy <= 50 * COIN);
         nSum += nSubsidy * 1000;
         BOOST_CHECK(MoneyRange(nSum));
     }
-    BOOST_CHECK(nSum == 2099999997690000ULL);
+    BOOST_CHECK(FormatMoney(nSum) == std::string("20999999.9999999999988615877188902203442921745590865612030029296875"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

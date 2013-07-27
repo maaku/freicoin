@@ -13,6 +13,8 @@
 
 #include <boost/filesystem.hpp>
 
+#include "bignum.h" // for mpq
+
 class QValidatedLineEdit;
 class SendCoinsRecipient;
 
@@ -46,7 +48,7 @@ namespace GUIUtil
     QString formatBitcoinURI(const SendCoinsRecipient &info);
 
     // Returns true if given address+amount meets "dust" definition
-    bool isDust(const QString& address, qint64 amount);
+    bool isDust(const QString& address, const mpq& amount);
 
     // HTML escaping for rich text controls
     QString HtmlEscape(const QString& str, bool fMultiLine=false);

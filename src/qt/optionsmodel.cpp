@@ -93,8 +93,8 @@ void OptionsModel::Init()
     // Wallet
 #ifdef ENABLE_WALLET
     if (!settings.contains("nTransactionFee"))
-        settings.setValue("nTransactionFee", (qint64)DEFAULT_TRANSACTION_FEE);
-    nTransactionFee = settings.value("nTransactionFee").toLongLong(); // if -paytxfee is set, this will be overridden later in init.cpp
+        settings.setValue("nTransactionFee", QString::fromStdString(FormatMoney(DEFAULT_TRANSACTION_FEE)));
+    ParseMoney(settings.value("nTransactionFee").toString().toStdString(), nTransactionFee); // if -paytxfee is set, this will be overridden later in init.cpp
     if (mapArgs.count("-paytxfee"))
         addOverriddenOption("-paytxfee");
 
@@ -195,11 +195,11 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             // Attention: Init() is called before nTransactionFee is set in AppInit2()!
             // To ensure we can change the fee on-the-fly update our QSetting when
             // opening OptionsDialog, which queries Fee via the mapper.
-            if (nTransactionFee != settings.value("nTransactionFee").toLongLong())
-                settings.setValue("nTransactionFee", (qint64)nTransactionFee);
+            if (nTransactionFee != i64_to_mpq(settings.value("nTransactionFee").toLongLong()))
+                settings.setValue("nTransactionFee", QString::fromStdString(nTransactionFee.get_str()));
             // Todo: Consider to revert back to use just nTransactionFee here, if we don't want
             // -paytxfee to update our QSettings!
-            return settings.value("nTransactionFee");
+            return QVariant(static_cast<qint64>(mpz_to_i64(nTransactionFee.get_num() / nTransactionFee.get_den())));
         case SpendZeroConfChange:
             return settings.value("bSpendZeroConfChange");
 #endif
@@ -290,8 +290,9 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
 #ifdef ENABLE_WALLET
         case Fee: // core option - can be changed on-the-fly
             // Todo: Add is valid check  and warn via message, if not
-            nTransactionFee = value.toLongLong();
-            settings.setValue("nTransactionFee", (qint64)nTransactionFee);
+            nTransactionFee = i64_to_mpq(value.toLongLong());
+            settings.setValue("nTransactionFee", static_cast<qint64>(
+                mpz_to_i64(nTransactionFee.get_num() / nTransactionFee.get_den())));
             emit transactionFeeChanged(nTransactionFee);
             break;
         case SpendZeroConfChange:
