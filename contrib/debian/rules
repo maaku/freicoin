@@ -1,12 +1,12 @@
 #!/usr/bin/make -f
 # -*- mode: makefile; coding: utf-8 -*-
 
-#DEB_MAKE_CHECK_TARGET = test_bitcoin
-#build/bitcoind::
-#	$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),,src/test_bitcoin)
+#DEB_MAKE_CHECK_TARGET = test_freicoin
+#build/freicoind::
+#	$(if $(filter nocheck,$(DEB_BUILD_OPTIONS)),,src/test_freicoin)
 
-DEB_INSTALL_EXAMPLES_bitcoind += debian/examples/*
-DEB_INSTALL_MANPAGES_bitcoind += debian/manpages/*
+DEB_INSTALL_EXAMPLES_freicoind += debian/examples/*
+DEB_INSTALL_MANPAGES_freicoind += debian/manpages/*
 
 %:
 	dh --with bash-completion $@
