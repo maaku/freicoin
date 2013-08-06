@@ -122,6 +122,8 @@ public:
         nMinerThreads = 0;
         nTargetTimespan = 14 * 24 * 60 * 60; // two weeks
         nTargetSpacing = 10 * 60;
+        /** FIR difficulty filter parameters */
+        nFIRDiffFilterThreshold = std::numeric_limits<int>::max();
 
         /**
          * Build the genesis block. Note that the output of the genesis coinbase cannot
