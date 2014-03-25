@@ -9,6 +9,7 @@
 
 BOOST_AUTO_TEST_SUITE(main_tests)
 
+#if 0
 BOOST_AUTO_TEST_CASE(subsidy_limit_test)
 {
     mpq nSum = 0;
@@ -20,5 +21,6 @@ BOOST_AUTO_TEST_CASE(subsidy_limit_test)
     }
     BOOST_CHECK(FormatMoney(nSum) == std::string("20999999.9999999999988615877188902203442921745590865612030029296875"));
 }
+#endif
 
 BOOST_AUTO_TEST_SUITE_END()
