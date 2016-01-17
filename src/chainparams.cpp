@@ -140,7 +140,7 @@ public:
         txNew.vout.resize(8);
         txNew.vin[0].scriptSig = CScript()
             << 486604799
-            << CBigNum(4)
+            << CScriptNum(4)
             << vector<unsigned char>(
                    (const unsigned char*)pszTimestamp,
                    (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
